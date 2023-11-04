@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/template-web.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <style type="text/css">
+        .container {
+            padding-top: 150px;
+        }
+
+        .list-group {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-group">
+            <input type="text" class="form-constrol" placeholder="请输入搜索关键字" id="search">
+            <ul class="list-group" id="list-box">
+                
+            </ul>
+        </div>
+    </div>
+    <script type="text/html" id="tpl">
+        {{ each result }}
+        <li class="list-group-item">{{$value}}</li>
+        {{ /each }}
+        
+    </script>
+    <script>
+        var searchInp = $("#search");
+        var listBox = $("#list-box");
+        searchInp.on("input", function () {
+            $.get("/search", this.value, function (res) {
+                var html=template('tpl',{result:res});
+                listBox.html(html);
+                console.log(html)
+                listBox.show()
+            })
+        })
+
+    </script>
+</body>
+
+</html>

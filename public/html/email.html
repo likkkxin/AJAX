@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮箱验证</title>
+    <script src="../js/template-web.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <style type="text/css">
+        p:not(:empty) {
+            padding: 15px;
+        }
+
+        .container {
+            padding-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-group">
+            <label>邮箱地址</label>
+            <input type="email" name="email" id="email" class="form-control" placeholder="请输入邮箱地址">
+            <!-- 错误提示 -->
+            <p id="info"></p>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $("input").blur(function () {
+            var email = this.value;
+            console.log($("input"))
+            var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(.[a-zA-Z0-9_-]+)+$/;
+            if (!reg.test(email)) {
+                $("p#info").html("请输入符合规则的邮箱地址");
+                $("p#info").addClass("bg-danger")
+                return
+
+            } else {
+                $.ajax({
+                    url: "/verifyemail",
+                    data: $("#email").serialize(),
+                    type: 'POST',
+
+                    success: function (res) {
+
+                        $("p#info").html(res.msg);
+                        if (res.msg == "邮箱已存在，请更换邮箱") {
+                            $("#info").addClass("bg-danger").removeClass("bg-success")
+                            console.log(typeof(res.msg))
+
+                        } else {
+                            $("#info").addClass("bg-success").removeClass("bg-danger");
+                            
+                          
+                        }
+
+
+                    }
+
+                })
+            }
+
+        })
+    </script>
+</body>
+
+</html>

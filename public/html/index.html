@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../js/template-web.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+
+<div id="output"></div>
+
+
+<!-- 定义模板 -->
+  <script id="my-template" type="text/html">
+    <h1>{{ title }}</h1>
+    <ul>
+        {{ each items }}
+            <li>{{ $value }}</li>
+        {{ /each }}
+    </ul>
+</script>
+  <script>
+    // 获取模板内容
+    var source = document.getElementById('my-template').innerHTML;
+
+    // 准备数据
+    var data = {
+      title: '示例模板',
+      items: ['条目1', '条目2', '条目3']
+    };
+
+    // 渲染模板
+    var html = template.render(source, data);
+
+    // 将渲染后的内容插入到页面中
+    document.getElementById('output').innerHTML = html;
+  </script>
+
+
+  <script>
+    $(document).ready(function () {
+        // 使用jQuery发起AJAX请求
+        $.ajax({
+            url: '/getajax', // 替换为你的服务器端数据接口URL
+            method: 'GET',
+            success: function (data) {
+                // 数据请求成功后的处理
+                var source = document.getElementById('my-template').innerHTML;
+                var html = template.render(source, data);
+
+                // 将渲染后的内容插入到页面中
+                $('#output').html(html);
+            },
+            error: function (xhr, status, error) {
+                // 数据请求失败时的处理
+                console.error('AJAX请求失败: ' + error);
+            }
+        });
+    });
+</script>
+  
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
